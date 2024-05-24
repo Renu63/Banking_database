@@ -19,11 +19,12 @@ public class Operations {
 
 		System.out.println("Enter Customerid:  ");
 		ac.setCustomerid(sc.nextInt());
-		sc.nextLine();
+		
 
 		System.out.println("Enter your password: ");
 		ac.setPassword(sc.next());
-
+		sc.nextLine();
+		
 		System.out.println("Enter your name: ");
 		ac.setCustomername(sc.nextLine());
 
@@ -38,7 +39,7 @@ public class Operations {
 			System.out.println("Enter deposit amount: ");
 			int a = sc.nextInt();
 
-			if (a > 200) 
+			if (a >=200) 
 			{
 				ac.setBal(a);
 				break;
@@ -51,6 +52,42 @@ public class Operations {
 		System.out.println("Your account is sucessfully created. ");
 		session.close();
 		sf.close();
+	}
+		
+		public static void Show_Details()
+		{
+			SessionFactory sf = hibernateutil.getssessionFactory();
+			Session session = sf.openSession();
+			
+			System.out.println("Enter account number");
+			int i=sc.nextInt();
+			Accdetail a= session.get(Accdetail.class, i);
+			System.out.println("Enter your password");
+		
+			if(a.getPassword().equals(sc.next()))
+			{
+				System.out.println(a);
+			}
+			session.close();
+			sf.close();
 		
 	}
+		
+		public static void Bal_info() {
+			SessionFactory sf = hibernateutil.getssessionFactory();
+			Session session = sf.openSession();
+			
+			System.out.println("Enter account number");
+			int i=sc.nextInt();
+			Accdetail a= session.get(Accdetail.class, i);
+			System.out.println("Enter your password");
+		
+			if(a.getPassword().equals(sc.next()))
+			{
+				System.out.println(a.getBal());
+			}
+			session.close();
+			sf.close();
+			
+		}
 }
