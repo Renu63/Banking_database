@@ -1,24 +1,43 @@
 package banking;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+public class Account {
 
-import lombok.Data;
+	private int accno;
+	private String customerName;
 
-@Data
-@Entity
+	private String address;
+	private double balance;
 
-public class Accdetail {
-	
-	@Id
-	private int Customerid;
-	private String Customername;
-	private String Address;
-	private long mobno;
-	private String password;
-	private int bal;
-	
-	
-	
+	public int getAccno() {
+		return accno;
+	}
+
+	public void setAccno(int accno) {
+		this.accno = accno;
+	}
+
+	public String getCustomerName() {
+		return customerName;
+	}
+
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public double getBalance() {
+		return balance;
+	}
+
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
 
 }
