@@ -2,95 +2,85 @@ package banking;
 
 import java.util.Scanner;
 
-public class operation {
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
-	Scanner sc = new Scanner(System.in);
-	Account ac = new Account();
+import banking_project_database.hibernateutil;
 
-	public void createacc() {
+public class Operations {
+	static Scanner sc = new Scanner(System.in);
 
-		System.out.println("Enter Account Number: ");
-		ac.setAccno(sc.nextInt());
+	public static void acc_open() {
+		SessionFactory sf = hibernateutil.getssessionFactory();
+		Session session = sf.openSession();
 
-		System.out.println("Enter Customer Name: ");
-		ac.setCustomerName(sc.next());
+		Accdetail ac = new Accdetail();
 
-		System.out.println("Enter Address: ");
-		ac.setAddress(sc.next());
+		System.out.println("Enter Customerid:  ");
+		ac.setCustomerid(sc.nextInt());
 
-		System.out.println("Enter Balance: $");
-		double d = sc.nextDouble();
+		System.out.println("Enter your password: ");
+		ac.setPassword(sc.next());
+		sc.nextLine();
+
+		System.out.println("Enter your name: ");
+		ac.setCustomername(sc.nextLine());
+
+		System.out.println("Enter your address: ");
+		ac.setAddress(sc.nextLine());
+
+		System.out.println("Enter your mo.no: ");
+		ac.setMobno(sc.nextLong());
 
 		while (true) {
-			if (d > 499) {
-				ac.setBalance(d);
+			System.out.println("Enter deposit amount: ");
+			int a = sc.nextInt();
+
+			if (a >= 200) {
+				ac.setBal(a);
 				break;
-			} else {
-				System.out.println("Balance should be equal to 500 or more than 500");
-				System.out.println("Please enter again:- ");
-				d = sc.nextDouble();
 			}
+			System.out.println("Your deposited amount is less than 200.\n Please pay more amount.");
 		}
-		System.out.println("Account created sccessfully");
+
+		session.save(ac);
+		session.beginTransaction().commit();
+		System.out.println("Your account is sucessfully created. ");
+		session.close();
+		sf.close();
+	}
+
+	public static void Show_Details() {
+		SessionFactory sf = hibernateutil.getssessionFactory();
+		Session session = sf.openSession();
+
+		System.out.println("Enter account number");
+		int i = sc.nextInt();
+		Accdetail a = session.get(Accdetail.class, i);
+		System.out.println("Enter your password");
+
+		if (a.getPassword().equals(sc.next())) {
+			System.out.println(a);
+		}
+		session.close();
+		sf.close();
 
 	}
 
-	public void accountDetails() {
-		System.out.println("ënter a account number :");
+	public static void Bal_info() {
+		SessionFactory sf = hibernateutil.getssessionFactory();
+		Session session = sf.openSession();
 
-		if (ac.getAccno() == sc.nextInt()) {
-			System.out.println("Your account number is : " + ac.getAccno());
-			System.out.println("Your name is : " + ac.getCustomerName());
-			System.out.println("Your address is : " + ac.getAddress());
-			System.out.println("Your account balance is : " + ac.getBalance());
+		System.out.println("Enter account number");
+		int i = sc.nextInt();
+		Accdetail a = session.get(Accdetail.class, i);
+		System.out.println("Enter your password");
 
-		} else {
-			System.out.println("Enter a correct account number \n please try again..");
+		if (a.getPassword().equals(sc.next())) {
+			System.out.println(a.getBal());
 		}
-	}
+		session.close();
+		sf.close();
 
-	public void BalanceInfo() {
-		System.out.println("Enter a account number :- ");
-
-		if (ac.getAccno() == sc.nextInt()) {
-
-			System.out.println("Your account balance is :- " + ac.getBalance());
-
-		} else {
-			System.out.println("Enter a correct account number \n please try again..");
-		}
-
-	}
-
-	public void deposit() {
-		System.out.println("Enter account number to deposit money :-");
-		if (ac.getAccno() == sc.nextInt()) {
-			System.out.println("Enter amount to deposit:- ");
-			ac.setBalance(ac.getBalance() + sc.nextDouble());
-
-			System.out.println("Amount deposited sucessfully. \nYour available balance is : " + ac.getBalance());
-
-		} else {
-			System.out.println("Please enter correct account number ");
-		}
-	}
-
-	public void Withdraw() {
-		System.out.println("Enter account number to withdraw money:- ");
-		if (ac.getAccno() == sc.nextInt()) {
-			System.out.println("Enter amount to withdraw ");
-			double wd = sc.nextDouble();
-
-			if ((ac.getBalance() - wd) != 500 && (ac.getBalance() - wd) > wd) {
-				ac.setBalance(ac.getBalance() - wd);
-				System.out.println("Amount withdrawl sucessfully..\nYour available balance is :- " + ac.getBalance());
-
-			} else {
-				System.out.println("Insufficient Fund..");
-				System.out.println("PLease enter correct amount:- ");
-			}
-		} else {
-			System.out.println("Please enter correct account number:- ");
-		}
 	}
 }
